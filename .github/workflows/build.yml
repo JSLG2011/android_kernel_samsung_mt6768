@@ -40,6 +40,7 @@ jobs:
       - name: Add KernelSU
         run: |
           curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/master/kernel/setup.sh" | bash -s master
+          ln -sv KernelSU/kernel drivers/kernelsu
 
       - name: Build Kernel
         env:
