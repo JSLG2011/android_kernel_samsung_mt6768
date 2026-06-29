@@ -37,6 +37,10 @@ jobs:
           tar -xf master.tar.gz --strip-components=1
           rm master.tar.gz
 
+      - name: Add KernelSU
+        run: |
+          curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/master/kernel/setup.sh" | bash -s master
+
       - name: Build Kernel
         env:
           DEVICE: ${{ github.event.inputs.device }}
@@ -73,6 +77,8 @@ jobs:
           CONFIG_DEBUG_INFO_BTF=n
           # CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT is not set
           CONFIG_DEBUG_INFO_REDUCED=y
+          CONFIG_KSU=y
+          CONFIG_KSU_TAMPER_SYSCALL_TABLE=y
           ' >> "$CFGDIR/compiled_defconfig"
           
           make -C $(pwd) O=$(pwd)/out -j$(nproc) compiled_defconfig
